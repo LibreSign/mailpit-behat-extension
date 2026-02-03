@@ -40,7 +40,7 @@ final class MailpitExtension implements Extension
         (new MailpitClientRegistrar())->register($container);
         (new MailpitAwareInitializerRegistrar())->register($container);
         (new OpenedEmailStorageRegistrar())->register($container);
-        (new OpenedEmailStorageContextInitializerRegistrar())->register($container);
+        (new StorageContextInitializerRegistrar())->register($container);
         (new EmailPurgeListenerRegistrar())->register($container);
     }
 
