@@ -30,7 +30,7 @@ final class EmailPurgeListener implements EventSubscriberInterface
     }
 
     /**
-     * @return array<string, array{0?: array{0: string, 1?: int}|string, 1?: array{0: string, 1?: int}|int, ...<int<0, max>, array{0: string, 1?: int}>}|string>
+     * @return array<string, array{0: string, 1: int}>
      */
     #[\Override]
     public static function getSubscribedEvents(): array
