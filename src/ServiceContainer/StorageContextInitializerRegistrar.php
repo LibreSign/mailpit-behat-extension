@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-final class OpenedEmailStorageContextInitializerRegistrar
+final class StorageContextInitializerRegistrar
 {
     public function register(ContainerBuilder $container): void
     {

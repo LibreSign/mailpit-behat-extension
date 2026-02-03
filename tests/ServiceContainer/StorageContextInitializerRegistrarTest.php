@@ -5,19 +5,19 @@ namespace LibreSign\Behat\MailpitExtension\Tests\ServiceContainer;
 
 use Behat\Behat\Context\ServiceContainer\ContextExtension;
 use LibreSign\Behat\MailpitExtension\Context\Initializer\OpenedEmailStorageContextInitializer;
-use LibreSign\Behat\MailpitExtension\ServiceContainer\OpenedEmailStorageContextInitializerRegistrar;
+use LibreSign\Behat\MailpitExtension\ServiceContainer\StorageContextInitializerRegistrar;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class OpenedEmailStorageContextInitializerRegistrarTest extends TestCase
+final class StorageContextInitializerRegistrarTest extends TestCase
 {
     #[Test]
     public function it_should_register_opened_email_storage_context_initializer_service(): void
     {
         $container = new ContainerBuilder();
 
-        $registrar = new OpenedEmailStorageContextInitializerRegistrar();
+        $registrar = new StorageContextInitializerRegistrar();
         $registrar->register($container);
 
         $this->assertTrue($container->hasDefinition('mailpit.opened_email_storage.context_initializer'));
@@ -30,7 +30,7 @@ final class OpenedEmailStorageContextInitializerRegistrarTest extends TestCase
     {
         $container = new ContainerBuilder();
 
-        $registrar = new OpenedEmailStorageContextInitializerRegistrar();
+        $registrar = new StorageContextInitializerRegistrar();
         $registrar->register($container);
 
         $definition = $container->getDefinition('mailpit.opened_email_storage.context_initializer');
@@ -45,7 +45,7 @@ final class OpenedEmailStorageContextInitializerRegistrarTest extends TestCase
     {
         $container = new ContainerBuilder();
 
-        $registrar = new OpenedEmailStorageContextInitializerRegistrar();
+        $registrar = new StorageContextInitializerRegistrar();
         $registrar->register($container);
 
         $definition = $container->getDefinition('mailpit.opened_email_storage.context_initializer');
