@@ -1,12 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace rpkamp\Behat\MailhogExtension\Context\Initializer;
+namespace LibreSign\Behat\MailpitExtension\Context\Initializer;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\Initializer\ContextInitializer;
-use rpkamp\Behat\MailhogExtension\Context\OpenedEmailStorageAwareContext;
-use rpkamp\Behat\MailhogExtension\Service\OpenedEmailStorage;
+use LibreSign\Behat\MailpitExtension\Context\OpenedEmailStorageAwareContext;
+use LibreSign\Behat\MailpitExtension\Service\OpenedEmailStorage;
+use Override;
 
 final class OpenedEmailStorageContextInitializer implements ContextInitializer
 {
@@ -17,6 +18,7 @@ final class OpenedEmailStorageContextInitializer implements ContextInitializer
         $this->openedEmailStorage = $openedEmailStorage;
     }
 
+    #[Override]
     public function initializeContext(Context $context): void
     {
         if (!$context instanceof OpenedEmailStorageAwareContext) {

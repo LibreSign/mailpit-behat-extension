@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace rpkamp\Behat\MailhogExtension\Context;
+namespace LibreSign\Behat\MailpitExtension\Context;
 
 use Exception;
-use rpkamp\Behat\MailhogExtension\Service\OpenedEmailStorage;
-use rpkamp\Mailhog\MailhogClient;
-use rpkamp\Mailhog\Message\Contact;
-use rpkamp\Mailhog\Specification\AndSpecification;
-use rpkamp\Mailhog\Specification\AttachmentSpecification;
-use rpkamp\Mailhog\Specification\BodySpecification;
-use rpkamp\Mailhog\Specification\RecipientSpecification;
-use rpkamp\Mailhog\Specification\SenderSpecification;
-use rpkamp\Mailhog\Specification\Specification;
-use rpkamp\Mailhog\Specification\SubjectSpecification;
+use LibreSign\Behat\MailpitExtension\Service\OpenedEmailStorage;
+use LibreSign\Mailpit\MailpitClient;
+use LibreSign\Mailpit\Message\Contact;
+use LibreSign\Mailpit\Specification\AndSpecification;
+use LibreSign\Mailpit\Specification\AttachmentSpecification;
+use LibreSign\Mailpit\Specification\BodySpecification;
+use LibreSign\Mailpit\Specification\RecipientSpecification;
+use LibreSign\Mailpit\Specification\SenderSpecification;
+use LibreSign\Mailpit\Specification\Specification;
+use LibreSign\Mailpit\Specification\SubjectSpecification;
 use RuntimeException;
 
 use function array_shift;
@@ -21,11 +21,11 @@ use function count;
 use function sprintf;
 
 /**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @psalm-suppress TooManyArguments
  */
-final class MailhogContext implements MailhogAwareContext, OpenedEmailStorageAwareContext
+final class MailpitContext implements MailpitAwareContext, OpenedEmailStorageAwareContext
 {
-    private MailhogClient $mailhogClient;
+    private MailpitClient $mailpitClient;
     private OpenedEmailStorage $openedEmailStorage;
 
     /**
@@ -58,11 +58,13 @@ final class MailhogContext implements MailhogAwareContext, OpenedEmailStorageAwa
         return $specifications;
     }
 
-    public function setMailhog(MailhogClient $client): void
+    #[\Override]
+    public function setMailpit(MailpitClient $client): void
     {
-        $this->mailhogClient = $client;
+        $this->mailpitClient = $client;
     }
 
+    #[\Override]
     public function setOpenedEmailStorage(OpenedEmailStorage $storage): void
     {
         $this->openedEmailStorage = $storage;
@@ -73,7 +75,7 @@ final class MailhogContext implements MailhogAwareContext, OpenedEmailStorageAwa
      */
     public function myInboxIsEmpty(): void
     {
-        $this->mailhogClient->purgeMessages();
+        $this->mailpitClient->purgeMessages();
     }
 
     /**
@@ -81,14 +83,19 @@ final class MailhogContext implements MailhogAwareContext, OpenedEmailStorageAwa
      * @Then /^I should see an email with body "(?P<body>[^"]*)"$/
      * @Then /^I should see an email from "(?P<from>[^"]*)"$/
      * @Then /^I should see an email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/
+     * // phpcs:ignore Generic.Files.LineLength
      * @Then /^I should see an email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)" from "(?P<from>[^"]*)"$/
      * @Then /^I should see an email with subject "(?P<subject>[^"]*)" from "(?P<from>[^"]*)"$/
      * @Then /^I should see an email to "(?P<recipient>[^"]*)"$/
+     * // phpcs:ignore Generic.Files.LineLength
      * @Then /^I should see an email with subject "(?P<subject>[^"]*)" to "(?P<recipient>[^"]*)"$/
      * @Then /^I should see an email with body "(?P<body>[^"]*)" to "(?P<recipient>[^"]*)"$/
      * @Then /^I should see an email from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)"$/
+     * // phpcs:ignore Generic.Files.LineLength
      * @Then /^I should see an email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)" to "(?P<recipient>[^"]*)"$/
+     * // phpcs:ignore Generic.Files.LineLength
      * @Then /^I should see an email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)" from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)"$/
+     * // phpcs:ignore Generic.Files.LineLength
      * @Then /^I should see an email with subject "(?P<subject>[^"]*)" from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)"$/
      */
     public function iShouldSeeAnEmailWithSubjectAndBodyFromToRecipient(
@@ -99,7 +106,7 @@ final class MailhogContext implements MailhogAwareContext, OpenedEmailStorageAwa
     ): void {
         $specifications = $this->getSpecifications($subject, $body, $from, $recipient);
 
-        $messages = $this->mailhogClient->findMessagesSatisfying(AndSpecification::all(...$specifications));
+        $messages = $this->mailpitClient->findMessagesSatisfying(AndSpecification::all(...$specifications));
 
         if (count($messages) > 0) {
             return;
@@ -127,8 +134,11 @@ final class MailhogContext implements MailhogAwareContext, OpenedEmailStorageAwa
      * @When /^I open the latest email to "(?P<recipient>[^"]*)" with subject "(?P<subject>[^"]*)"$/
      * @When /^I open the latest email from "(?P<from>[^"]*)" with body "(?P<body>[^"]*)"$/
      * @When /^I open the latest email to "(?P<recipient>[^"]*)" with body "(?P<body>[^"]*)"$/
+     * // phpcs:ignore Generic.Files.LineLength
      * @When /^I open the latest email from "(?P<from>[^"]*)" with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/
+     * // phpcs:ignore Generic.Files.LineLength
      * @When /^I open the latest email to "(?P<recipient>[^"]*)" with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/
+     * // phpcs:ignore Generic.Files.LineLength
      * @When /^I open the latest email from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)" with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/
      */
     public function iOpenTheEmail(
@@ -139,7 +149,7 @@ final class MailhogContext implements MailhogAwareContext, OpenedEmailStorageAwa
     ): void {
         $specifications = $this->getSpecifications($subject, $body, $from, $recipient);
 
-        $messages = $this->mailhogClient->findMessagesSatisfying(AndSpecification::all(...$specifications));
+        $messages = $this->mailpitClient->findMessagesSatisfying(AndSpecification::all(...$specifications));
 
         if (count($messages) === 0) {
             throw new RuntimeException(
@@ -196,7 +206,7 @@ final class MailhogContext implements MailhogAwareContext, OpenedEmailStorageAwa
     {
         $specification = new BodySpecification($text);
 
-        $messages = $this->mailhogClient->findMessagesSatisfying($specification);
+        $messages = $this->mailpitClient->findMessagesSatisfying($specification);
 
         if (count($messages) === 0) {
             throw new Exception(sprintf('Could not find "%s" in email', $text));
@@ -208,14 +218,14 @@ final class MailhogContext implements MailhogAwareContext, OpenedEmailStorageAwa
      */
     public function thereShouldBeEmailInMyInbox(int $numEmails): void
     {
-        $numMailhogMessages = $this->mailhogClient->getNumberOfMessages();
+        $numMailpitMessages = $this->mailpitClient->getNumberOfMessages();
 
-        if ($numMailhogMessages !== $numEmails) {
+        if ($numMailpitMessages !== $numEmails) {
             throw new Exception(
                 sprintf(
                     'Expected %d messages in inbox, but there were %d',
                     $numEmails,
-                    $numMailhogMessages
+                    $numMailpitMessages
                 )
             );
         }
@@ -228,7 +238,7 @@ final class MailhogContext implements MailhogAwareContext, OpenedEmailStorageAwa
     {
         $specification = new AttachmentSpecification($filename);
 
-        $messages = $this->mailhogClient->findMessagesSatisfying($specification);
+        $messages = $this->mailpitClient->findMessagesSatisfying($specification);
 
         if (count($messages) === 0) {
             throw new Exception(sprintf('Messages does not contain a message with attachment "%s"', $filename));

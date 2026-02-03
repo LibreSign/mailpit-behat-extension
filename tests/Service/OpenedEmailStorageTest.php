@@ -1,20 +1,19 @@
 <?php
 
-namespace rpkamp\Behat\MailhogExtension\Tests\Service;
+namespace LibreSign\Behat\MailpitExtension\Tests\Service;
 
+use LibreSign\Behat\MailpitExtension\Service\OpenedEmailStorage;
+use LibreSign\Mailpit\Message\Contact;
+use LibreSign\Mailpit\Message\ContactCollection;
+use LibreSign\Mailpit\Message\Headers;
+use LibreSign\Mailpit\Message\Message;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use rpkamp\Behat\MailhogExtension\Service\OpenedEmailStorage;
-use rpkamp\Mailhog\Message\Contact;
-use rpkamp\Mailhog\Message\ContactCollection;
-use rpkamp\Mailhog\Message\Headers;
-use rpkamp\Mailhog\Message\Message;
 use RuntimeException;
 
 class OpenedEmailStorageTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_should_indicate_when_no_opened_email_has_been_set(): void
     {
         $service = new OpenedEmailStorage();
@@ -22,9 +21,7 @@ class OpenedEmailStorageTest extends TestCase
         $this->assertFalse($service->hasOpenedEmail());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_should_indicate_when_an_opened_email_has_been_set(): void
     {
         $service = new OpenedEmailStorage();
@@ -33,9 +30,7 @@ class OpenedEmailStorageTest extends TestCase
         $this->assertTrue($service->hasOpenedEmail());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_should_throw_exception_when_asked_for_opened_email_but_none_was_set(): void
     {
         $service = new OpenedEmailStorage();
@@ -44,9 +39,7 @@ class OpenedEmailStorageTest extends TestCase
         $service->getOpenedEmail();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_should_return_the_set_opened_email(): void
     {
         $service = new OpenedEmailStorage();
