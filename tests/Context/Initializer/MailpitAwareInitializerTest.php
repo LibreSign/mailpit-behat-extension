@@ -7,8 +7,6 @@ use Behat\Behat\Context\Context;
 use LibreSign\Behat\MailpitExtension\Context\Initializer\MailpitAwareInitializer;
 use LibreSign\Behat\MailpitExtension\Context\MailpitAwareContext;
 use LibreSign\Mailpit\MailpitClient;
-use Mockery;
-use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -26,8 +24,7 @@ final class MailpitAwareInitializerTest extends TestCase
             }
         };
 
-        /** @var MockInterface|MailpitClient $mailpitClient */
-        $mailpitClient = Mockery::mock(MailpitClient::class);
+        $mailpitClient = $this->createMock(MailpitClient::class);
 
         $initializer = new MailpitAwareInitializer($mailpitClient);
         $initializer->initializeContext($context);
@@ -47,8 +44,7 @@ final class MailpitAwareInitializerTest extends TestCase
             }
         };
 
-        /** @var MockInterface|MailpitClient $mailpitClient */
-        $mailpitClient = Mockery::mock(MailpitClient::class);
+        $mailpitClient = $this->createMock(MailpitClient::class);
 
         $initializer = new MailpitAwareInitializer($mailpitClient);
         $initializer->initializeContext($context);
