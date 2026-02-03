@@ -83,14 +83,19 @@ final class MailpitContext implements MailpitAwareContext, OpenedEmailStorageAwa
      * @Then /^I should see an email with body "(?P<body>[^"]*)"$/
      * @Then /^I should see an email from "(?P<from>[^"]*)"$/
      * @Then /^I should see an email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/
+     * // phpcs:ignore Generic.Files.LineLength
      * @Then /^I should see an email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)" from "(?P<from>[^"]*)"$/
      * @Then /^I should see an email with subject "(?P<subject>[^"]*)" from "(?P<from>[^"]*)"$/
      * @Then /^I should see an email to "(?P<recipient>[^"]*)"$/
+     * // phpcs:ignore Generic.Files.LineLength
      * @Then /^I should see an email with subject "(?P<subject>[^"]*)" to "(?P<recipient>[^"]*)"$/
      * @Then /^I should see an email with body "(?P<body>[^"]*)" to "(?P<recipient>[^"]*)"$/
      * @Then /^I should see an email from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)"$/
+     * // phpcs:ignore Generic.Files.LineLength
      * @Then /^I should see an email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)" to "(?P<recipient>[^"]*)"$/
+     * // phpcs:ignore Generic.Files.LineLength
      * @Then /^I should see an email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)" from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)"$/
+     * // phpcs:ignore Generic.Files.LineLength
      * @Then /^I should see an email with subject "(?P<subject>[^"]*)" from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)"$/
      */
     public function iShouldSeeAnEmailWithSubjectAndBodyFromToRecipient(
@@ -129,8 +134,11 @@ final class MailpitContext implements MailpitAwareContext, OpenedEmailStorageAwa
      * @When /^I open the latest email to "(?P<recipient>[^"]*)" with subject "(?P<subject>[^"]*)"$/
      * @When /^I open the latest email from "(?P<from>[^"]*)" with body "(?P<body>[^"]*)"$/
      * @When /^I open the latest email to "(?P<recipient>[^"]*)" with body "(?P<body>[^"]*)"$/
+     * // phpcs:ignore Generic.Files.LineLength
      * @When /^I open the latest email from "(?P<from>[^"]*)" with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/
+     * // phpcs:ignore Generic.Files.LineLength
      * @When /^I open the latest email to "(?P<recipient>[^"]*)" with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/
+     * // phpcs:ignore Generic.Files.LineLength
      * @When /^I open the latest email from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)" with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/
      */
     public function iOpenTheEmail(
