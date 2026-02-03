@@ -3,6 +3,3 @@ parameters:
 
     paths:
         - src
-
-    excludePaths:
-        - src/ServiceContainer/MailpitExtension.php

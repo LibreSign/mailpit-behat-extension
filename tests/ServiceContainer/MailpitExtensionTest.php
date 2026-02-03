@@ -112,6 +112,15 @@ final class MailpitExtensionTest extends TestCase
         $this->assertEquals('email', $configuration['purge_tag']);
     }
 
+    #[Test]
+    public function it_should_register_opened_email_storage_context_initializer(): void
+    {
+        $this->loadExtension($this->container);
+
+        $this->assertTrue($this->container->hasDefinition('mailpit.opened_email_storage.context_initializer'));
+        $this->assertTrue($this->container->hasDefinition('mailpit.opened_email_storage'));
+    }
+
     private function assertContainerHasServiceOfClass(string $className, string $serviceId): void
     {
         $definition = $this->container->getDefinition($serviceId);
