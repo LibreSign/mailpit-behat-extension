@@ -1,0 +1,11 @@
+{
+    "require": {
+        "phpmd/phpmd": "^2.15.0"
+    },
+    "config": {
+        "platform": {
+            "php": "8.2"
+        },
+        "sort-packages": true
+    }
+}

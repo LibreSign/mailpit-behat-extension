@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace rpkamp\Behat\MailhogExtension\Tests\Listener;
+namespace LibreSign\Behat\MailpitExtension\Tests\Listener;
 
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

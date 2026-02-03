@@ -1,8 +1,8 @@
-includes:
-    - vendor/phpstan/phpstan-mockery/extension.neon
-
 parameters:
-    excludes_analyse:
-        - %rootDir%/../../../src/ServiceContainer/MailhogExtension.php
-        - %rootDir%/../../../tests/ServiceContainer/MailhogExtensionTest.php
-        - %rootDir%/../../../tests/Listener/EventDispatcher.php
+    level: 8
+
+    paths:
+        - src
+
+    excludePaths:
+        - src/ServiceContainer/MailpitExtension.php

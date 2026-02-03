@@ -1,13 +1,13 @@
-# Mailhog Behat Extension ![Packagist Version](https://img.shields.io/packagist/v/rpkamp/mailhog-behat-extension)
+# Mailpit Behat Extension ![Packagist Version](https://img.shields.io/packagist/v/libresign/mailpit-behat-extension)
 
-A simple PHP (8.1+) [Behat] extension for [Mailhog][mailhog].
+A simple PHP (8.2+) [Behat] extension for [Mailpit][mailpit], the modern replacement for [Mailhog][mailhog].
 
 ## Installation
 
-This package does not require any specific HTTP client implementation, but it requires [rpkamp/mailhog-client][mailhog-client], which is based on [HTTPlug][httplug], so you can inject your own HTTP client of choice. So you when you install this extension make sure you either already have an HTTP client installed, or install one at the same time as installing this extension, otherwise installation will fail.
+This package does not require any specific HTTP client implementation, but it requires [libresign/mailpit-client][mailpit-client], which is based on [HTTPlug][httplug], so you can inject your own HTTP client of choice. So you when you install this extension make sure you either already have an HTTP client installed, or install one at the same time as installing this extension, otherwise installation will fail.
 
 ```bash
-composer require rpkamp/mailhog-behat-extension <your-http-client-of-choice>
+composer require libresign/mailpit-behat-extension <your-http-client-of-choice>
 ```
 
 For more information please refer to the [HTTPlug documentation for Library Users][httplug-docs].
@@ -23,13 +23,13 @@ default:
   suites:
     # your suite configuration here
   extensions:
-    rpkamp\Behat\MailhogExtension:
-      base_url: http://localhost:8025
+    LibreSign\Behat\MailpitExtension:
+      base_url: http://localhost:9025
       purge_tag: email # optional, defaults to 'email'
 ```
 
-The `base_url` is the URL where the Mailhog Web UI is listening to (by default this is `http://localhost:8025).
-The `purge_tag` is the behat tag that triggers a purge in mailhog before the scenario/feature (see "Use email tag to purge emails before scenarios")
+The `base_url` is the URL where the Mailpit Web UI is listening to (by default this is `http://localhost:9025`).
+The `purge_tag` is the behat tag that triggers a purge in mailpit before the scenario/feature (see "Use email tag to purge emails before scenarios")
 
 ### Use MailhogContext
 
@@ -39,7 +39,7 @@ The easiest way to get started is to configure behat to use `rpkamp\Behat\Mailho
 default:
   suites:
     contexts:
-      - rpkamp\Behat\MailhogExtension\Context\MailhogContext
+      - LibreSign\Behat\MailpitExtension\Context\MailpitContext
 ```
 
 This enables the following Gherkin for your scenarios to make assumptions on received email messages:

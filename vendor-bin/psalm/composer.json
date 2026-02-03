@@ -1,0 +1,11 @@
+{
+    "require": {
+        "vimeo/psalm": "^6.0"
+    },
+    "config": {
+        "platform": {
+            "php": "8.2.27"
+        },
+        "sort-packages": true
+    }
+}

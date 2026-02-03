@@ -1,0 +1,11 @@
+{
+    "require": {
+        "phpstan/phpstan": "^2.1.x-dev"
+    },
+    "config": {
+        "platform": {
+            "php": "8.2"
+        },
+        "sort-packages": true
+    }
+}

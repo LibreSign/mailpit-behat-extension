@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace rpkamp\Behat\MailhogExtension\Context;
+namespace LibreSign\Behat\MailpitExtension\Context;
 
 use Behat\Behat\Context\Context;
-use rpkamp\Behat\MailhogExtension\Service\OpenedEmailStorage;
+use LibreSign\Behat\MailpitExtension\Service\OpenedEmailStorage;
 
 interface OpenedEmailStorageAwareContext extends Context
 {

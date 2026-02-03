@@ -4,7 +4,7 @@ default:
       path: '%paths.base%/features'
       contexts:
         - FeatureContext
-        - rpkamp\Behat\MailhogExtension\Context\MailhogContext
+        - LibreSign\Behat\MailpitExtension\Context\MailpitContext
   extensions:
-    rpkamp\Behat\MailhogExtension:
-      base_url: http://localhost:10025
+    LibreSign\Behat\MailpitExtension:
+      base_url: '%env(MAILPIT_BASE_URL)%'

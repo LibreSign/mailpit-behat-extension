@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace rpkamp\Behat\MailhogExtension\Service;
+namespace LibreSign\Behat\MailpitExtension\Service;
 
-use rpkamp\Mailhog\Message\Message;
+use LibreSign\Mailpit\Message\Message;
 use RuntimeException;
 
 final class OpenedEmailStorage

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace rpkamp\Behat\MailhogExtension\Tests\Listener;
+namespace LibreSign\Behat\MailpitExtension\Tests\Listener;
 
 use Behat\Behat\EventDispatcher\Event\BeforeScenarioTested;
 use Behat\Behat\EventDispatcher\Event\ExampleTested;
@@ -10,36 +10,33 @@ use Behat\Gherkin\Node\FeatureNode;
 use Behat\Gherkin\Node\ScenarioNode;
 use Behat\Testwork\Environment\StaticEnvironment;
 use Behat\Testwork\Suite\GenericSuite;
-use Mockery;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use Mockery\MockInterface;
-use rpkamp\Behat\MailhogExtension\Listener\EmailPurgeListener;
-use rpkamp\Mailhog\MailhogClient;
+use LibreSign\Behat\MailpitExtension\Listener\EmailPurgeListener;
+use LibreSign\Mailpit\MailpitClient;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 
-final class EmailPurgeListenerTest extends MockeryTestCase
+final class EmailPurgeListenerTest extends TestCase
 {
-    /**
-     * @var MailhogClient|MockInterface
-     */
-    private MailhogClient $client;
+    private MailpitClient&MockObject $client;
     private EmailPurgeListener $listener;
     private EventDispatcher $dispatcher;
 
     public function setUp(): void
     {
-        $this->client = Mockery::spy(MailhogClient::class);
+        $this->client = $this->createMock(MailpitClient::class);
         $this->listener = new EmailPurgeListener($this->client, 'email');
 
         $this->dispatcher = new EventDispatcher(new SymfonyEventDispatcher());
         $this->dispatcher->addSubscriber($this->listener);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_should_purge_all_messages_before_each_scenario_in_feature_with_email_tag(): void
     {
+        $this->client->expects($this->once())->method('purgeMessages');
+
         $scenario = new ScenarioNode('test', [], [], 'test', 1);
         $event = new BeforeScenarioTested(
             new StaticEnvironment(new GenericSuite('generic', [])),
@@ -48,15 +45,13 @@ final class EmailPurgeListenerTest extends MockeryTestCase
         );
 
         $this->dispatcher->dispatch($event, ScenarioTested::BEFORE);
-
-        $this->client->shouldHaveReceived('purgeMessages');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_should_purge_all_messages_before_each_scenario_in_with_email_tag(): void
     {
+        $this->client->expects($this->once())->method('purgeMessages');
+
         $scenario = new ScenarioNode('test', ['email'], [], 'test', 1);
         $event = new BeforeScenarioTested(
             new StaticEnvironment(new GenericSuite('generic', [])),
@@ -65,15 +60,13 @@ final class EmailPurgeListenerTest extends MockeryTestCase
         );
 
         $this->dispatcher->dispatch($event, ScenarioTested::BEFORE);
-
-        $this->client->shouldHaveReceived('purgeMessages');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_should_purge_all_messages_before_each_example_in_feature_with_email_tag(): void
     {
+        $this->client->expects($this->once())->method('purgeMessages');
+
         $scenario = new ScenarioNode('test', [], [], 'test', 1);
         $event = new BeforeScenarioTested(
             new StaticEnvironment(new GenericSuite('generic', [])),
@@ -82,15 +75,13 @@ final class EmailPurgeListenerTest extends MockeryTestCase
         );
 
         $this->dispatcher->dispatch($event, ExampleTested::BEFORE);
-
-        $this->client->shouldHaveReceived('purgeMessages');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_should_purge_all_messages_before_each_example_with_email_tag(): void
     {
+        $this->client->expects($this->once())->method('purgeMessages');
+
         $scenario = new ScenarioNode('test', ['email'], [], 'test', 1);
         $event = new BeforeScenarioTested(
             new StaticEnvironment(new GenericSuite('generic', [])),
@@ -99,15 +90,13 @@ final class EmailPurgeListenerTest extends MockeryTestCase
         );
 
         $this->dispatcher->dispatch($event, ExampleTested::BEFORE);
-
-        $this->client->shouldHaveReceived('purgeMessages');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_should_purge_messages_only_once_on_multiple_email_tags(): void
     {
+        $this->client->expects($this->once())->method('purgeMessages');
+
         $scenario = new ScenarioNode('test', ['email', 'email'], [], 'test', 1);
         $event = new BeforeScenarioTested(
             new StaticEnvironment(new GenericSuite('generic', [])),
@@ -116,15 +105,13 @@ final class EmailPurgeListenerTest extends MockeryTestCase
         );
 
         $this->dispatcher->dispatch($event, ExampleTested::BEFORE);
-
-        $this->client->shouldHaveReceived('purgeMessages')->once();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_should_not_purge_all_messages_before_each_scenario_without_email_tag(): void
     {
+        $this->client->expects($this->never())->method('purgeMessages');
+
         $scenario = new ScenarioNode('test', [], [], 'test', 1);
         $event = new BeforeScenarioTested(
             new StaticEnvironment(new GenericSuite('generic', [])),
@@ -133,15 +120,13 @@ final class EmailPurgeListenerTest extends MockeryTestCase
         );
 
         $this->dispatcher->dispatch($event, ScenarioTested::BEFORE);
-
-        $this->client->shouldNotHaveReceived('purgeMessages');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_should_not_purge_all_messages_before_each_example_without_email_tag(): void
     {
+        $this->client->expects($this->never())->method('purgeMessages');
+
         $scenario = new ScenarioNode('test', [], [], 'test', 1);
         $event = new BeforeScenarioTested(
             new StaticEnvironment(new GenericSuite('generic', [])),
@@ -150,17 +135,14 @@ final class EmailPurgeListenerTest extends MockeryTestCase
         );
 
         $this->dispatcher->dispatch($event, ExampleTested::BEFORE);
-
-        $this->client->shouldNotHaveReceived('purgeMessages');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_should_use_custom_tag_to_purge_emails(): void
     {
-        /** @var MockInterface|MailhogClient $client */
-        $client = Mockery::spy(MailhogClient::class);
+        $client = $this->createMock(MailpitClient::class);
+        $client->expects($this->once())->method('purgeMessages');
+
         $listener = new EmailPurgeListener($client, 'foobarbazban');
 
         $dispatcher = new EventDispatcher(new SymfonyEventDispatcher());
@@ -174,7 +156,5 @@ final class EmailPurgeListenerTest extends MockeryTestCase
         );
 
         $dispatcher->dispatch($event, ScenarioTested::BEFORE);
-
-        $client->shouldHaveReceived('purgeMessages');
     }
 }

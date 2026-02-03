@@ -1,0 +1,15 @@
+{
+    "require": {
+        "doctrine/coding-standard": "^9.0",
+        "squizlabs/php_codesniffer": "^3.7.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "platform": {
+            "php": "8.2"
+        },
+        "sort-packages": true
+    }
+}

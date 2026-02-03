@@ -3,36 +3,42 @@
 declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
-use rpkamp\Behat\MailhogExtension\Context\MailhogAwareContext;
-use rpkamp\Mailhog\MailhogClient;
+use LibreSign\Behat\MailpitExtension\Context\MailpitAwareContext;
+use LibreSign\Mailpit\MailpitClient;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 
-final class FeatureContext implements Context, MailhogAwareContext
+final class FeatureContext implements Context, MailpitAwareContext
 {
     /**
-     * @var MailhogClient
+     * @var MailpitClient
      */
-    private $mailHog;
+    private $mailpit;
 
-    public function setMailhog(MailhogClient $client): void
+    public function setMailpit(MailpitClient $client): void
     {
-        $this->mailHog = $client;
+        $this->mailpit = $client;
     }
 
     /**
      * @Given /^I send an email with subject "([^"]*)" and body "([^"]*)"$/
      * @Given /^I send an email with subject "([^"]*)" and body "([^"]*)" to "([^"]*)"$/
      */
-    public function iSendAnEmailWithSubjectAndBodyTo(string $subject, string $body, string $to = 'me@myself.exmple'): void
+    public function iSendAnEmailWithSubjectAndBodyTo(string $subject, string $body, string $to = 'me@myself.example'): void
     {
-        $message = (new Swift_Message())
-            ->setFrom('me@myself.example', 'Myself')
-            ->setTo($to)
-            ->setBody($body)
-            ->setSubject($subject);
+        $email = (new Email())
+            ->from(new Address('me@myself.example', 'Myself'))
+            ->to($to)
+            ->subject($subject)
+            ->text($body);
 
-        $mailer = new Swift_Mailer(new Swift_SmtpTransport('localhost', 3025));
+        $smtpDsn = $_ENV['SMTP_DSN'] ?? 'smtp://localhost:2025';
+        $transport = Transport::fromDsn($smtpDsn);
+        $mailer = new Mailer($transport);
 
-        $mailer->send($message);
+        $mailer->send($email);
     }
 
     /**
@@ -40,19 +46,17 @@ final class FeatureContext implements Context, MailhogAwareContext
      */
     public function iSendAnEmailWithAttachment(string $filename): void
     {
-        $message = (new Swift_Message())
-            ->setFrom('me@myself.example', 'Myself')
-            ->setTo('me@myself.example')
-            ->setBody('Please see attached')
-            ->setSubject('Email with attachment')
-            ->attach(new Swift_Attachment(
-                'Hello world!',
-                $filename,
-                'text/plain'
-            ));
+        $email = (new Email())
+            ->from(new Address('me@myself.example', 'Myself'))
+            ->to('me@myself.example')
+            ->subject('Email with attachment')
+            ->text('Please see attached')
+            ->attach('Hello world!', $filename, 'text/plain');
 
-        $mailer = new Swift_Mailer(new Swift_SmtpTransport('localhost', 3025));
+        $smtpDsn = $_ENV['SMTP_DSN'] ?? 'smtp://localhost:2025';
+        $transport = Transport::fromDsn($smtpDsn);
+        $mailer = new Mailer($transport);
 
-        $mailer->send($message);
+        $mailer->send($email);
     }
 }
