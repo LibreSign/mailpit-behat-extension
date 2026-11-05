@@ -6,6 +6,8 @@ namespace LibreSign\Behat\MailpitExtension\Context\Initializer;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\Initializer\ContextInitializer;
 use LibreSign\Behat\MailpitExtension\Context\MailpitAwareContext;
+use LibreSign\Behat\MailpitExtension\Context\MailpitContext;
+use LibreSign\Behat\MailpitExtension\Listener\EmailPurgeListener;
 use LibreSign\Mailpit\MailpitClient;
 use Override;
 
@@ -13,7 +15,7 @@ final class MailpitAwareInitializer implements ContextInitializer
 {
     private MailpitClient $client;
 
-    public function __construct(MailpitClient $client)
+    public function __construct(MailpitClient $client, private ?EmailPurgeListener $purgeListener = null)
     {
         $this->client = $client;
     }
@@ -26,5 +28,9 @@ final class MailpitAwareInitializer implements ContextInitializer
         }
 
         $context->setMailpit($this->client);
+
+        if ($context instanceof MailpitContext && $this->purgeListener !== null) {
+            $context->setEmailPurgeListener($this->purgeListener);
+        }
     }
 }

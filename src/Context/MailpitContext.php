@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 namespace LibreSign\Behat\MailpitExtension\Context;
 
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Step\Given;
 use Behat\Step\Then;
 use Behat\Step\When;
+use Behat\Hook\BeforeScenario;
 use Exception;
+use LibreSign\Behat\MailpitExtension\Listener\EmailPurgeListener;
 use LibreSign\Behat\MailpitExtension\Service\OpenedEmailStorage;
 use LibreSign\Mailpit\MailpitClient;
 use LibreSign\Mailpit\Message\Contact;
@@ -30,6 +33,7 @@ final class MailpitContext implements MailpitAwareContext, OpenedEmailStorageAwa
 {
     private MailpitClient $mailpitClient;
     private OpenedEmailStorage $openedEmailStorage;
+    private EmailPurgeListener $emailPurgeListener;
 
     /**
      * @return Specification[]
@@ -71,6 +75,17 @@ final class MailpitContext implements MailpitAwareContext, OpenedEmailStorageAwa
     public function setOpenedEmailStorage(OpenedEmailStorage $storage): void
     {
         $this->openedEmailStorage = $storage;
+    }
+
+    public function setEmailPurgeListener(EmailPurgeListener $listener): void
+    {
+        $this->emailPurgeListener = $listener;
+    }
+
+    #[BeforeScenario]
+    public function purgeBeforeScenario(BeforeScenarioScope $scope): void
+    {
+        $this->emailPurgeListener->purgeFor($scope->getFeature(), $scope->getScenario());
     }
 
     #[Given('/^my inbox is empty$/')]

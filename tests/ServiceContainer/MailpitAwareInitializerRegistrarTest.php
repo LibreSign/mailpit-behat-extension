@@ -51,6 +51,6 @@ final class MailpitAwareInitializerRegistrarTest extends TestCase
         $definition = $container->getDefinition('mailpit.context_initializer');
         $arguments = $definition->getArguments();
 
-        $this->assertCount(1, $arguments);
+        $this->assertCount(2, $arguments);
     }
 }
