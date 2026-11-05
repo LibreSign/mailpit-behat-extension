@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace LibreSign\Behat\MailpitExtension\Context;
 
+use Behat\Step\Given;
+use Behat\Step\Then;
+use Behat\Step\When;
 use Exception;
 use LibreSign\Behat\MailpitExtension\Service\OpenedEmailStorage;
 use LibreSign\Mailpit\MailpitClient;
@@ -70,34 +73,29 @@ final class MailpitContext implements MailpitAwareContext, OpenedEmailStorageAwa
         $this->openedEmailStorage = $storage;
     }
 
-    /**
-     * @Given /^my inbox is empty$/
-     */
+    #[Given('/^my inbox is empty$/')]
     public function myInboxIsEmpty(): void
     {
         $this->mailpitClient->purgeMessages();
     }
 
-    /**
-     * @Then /^I should see an email with subject "(?P<subject>[^"]*)"$/
-     * @Then /^I should see an email with body "(?P<body>[^"]*)"$/
-     * @Then /^I should see an email from "(?P<from>[^"]*)"$/
-     * @Then /^I should see an email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/
-     * // phpcs:ignore Generic.Files.LineLength
-     * @Then /^I should see an email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)" from "(?P<from>[^"]*)"$/
-     * @Then /^I should see an email with subject "(?P<subject>[^"]*)" from "(?P<from>[^"]*)"$/
-     * @Then /^I should see an email to "(?P<recipient>[^"]*)"$/
-     * // phpcs:ignore Generic.Files.LineLength
-     * @Then /^I should see an email with subject "(?P<subject>[^"]*)" to "(?P<recipient>[^"]*)"$/
-     * @Then /^I should see an email with body "(?P<body>[^"]*)" to "(?P<recipient>[^"]*)"$/
-     * @Then /^I should see an email from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)"$/
-     * // phpcs:ignore Generic.Files.LineLength
-     * @Then /^I should see an email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)" to "(?P<recipient>[^"]*)"$/
-     * // phpcs:ignore Generic.Files.LineLength
-     * @Then /^I should see an email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)" from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)"$/
-     * // phpcs:ignore Generic.Files.LineLength
-     * @Then /^I should see an email with subject "(?P<subject>[^"]*)" from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)"$/
-     */
+    #[Then('/^I should see an email with subject "(?P<subject>[^"]*)"$/')]
+    #[Then('/^I should see an email with body "(?P<body>[^"]*)"$/')]
+    #[Then('/^I should see an email from "(?P<from>[^"]*)"$/')]
+    #[Then('/^I should see an email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/')]
+    // phpcs:ignore Generic.Files.LineLength
+    #[Then('/^I should see an email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)" from "(?P<from>[^"]*)"$/')]
+    #[Then('/^I should see an email with subject "(?P<subject>[^"]*)" from "(?P<from>[^"]*)"$/')]
+    #[Then('/^I should see an email to "(?P<recipient>[^"]*)"$/')]
+    #[Then('/^I should see an email with subject "(?P<subject>[^"]*)" to "(?P<recipient>[^"]*)"$/')]
+    #[Then('/^I should see an email with body "(?P<body>[^"]*)" to "(?P<recipient>[^"]*)"$/')]
+    #[Then('/^I should see an email from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)"$/')]
+    // phpcs:ignore Generic.Files.LineLength
+    #[Then('/^I should see an email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)" to "(?P<recipient>[^"]*)"$/')]
+    // phpcs:ignore Generic.Files.LineLength
+    #[Then('/^I should see an email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)" from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)"$/')]
+    // phpcs:ignore Generic.Files.LineLength
+    #[Then('/^I should see an email with subject "(?P<subject>[^"]*)" from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)"$/')]
     public function iShouldSeeAnEmailWithSubjectAndBodyFromToRecipient(
         ?string $subject = null,
         ?string $body = null,
@@ -123,24 +121,22 @@ final class MailpitContext implements MailpitAwareContext, OpenedEmailStorageAwa
         );
     }
 
-    /**
-     * @When /^I open the latest email from "(?P<from>[^"]*)"$/
-     * @When /^I open the latest email to "(?P<recipient>[^"]*)"$/
-     * @When /^I open the latest email with subject "(?P<subject>[^"]*)"$/
-     * @When /^I open the latest email with body "(?P<body>[^"]*)"$/
-     * @When /^I open the latest email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/
-     * @When /^I open the latest email from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)"$/
-     * @When /^I open the latest email from "(?P<from>[^"]*)" with subject "(?P<subject>[^"]*)"$/
-     * @When /^I open the latest email to "(?P<recipient>[^"]*)" with subject "(?P<subject>[^"]*)"$/
-     * @When /^I open the latest email from "(?P<from>[^"]*)" with body "(?P<body>[^"]*)"$/
-     * @When /^I open the latest email to "(?P<recipient>[^"]*)" with body "(?P<body>[^"]*)"$/
-     * // phpcs:ignore Generic.Files.LineLength
-     * @When /^I open the latest email from "(?P<from>[^"]*)" with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/
-     * // phpcs:ignore Generic.Files.LineLength
-     * @When /^I open the latest email to "(?P<recipient>[^"]*)" with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/
-     * // phpcs:ignore Generic.Files.LineLength
-     * @When /^I open the latest email from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)" with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/
-     */
+    #[When('/^I open the latest email from "(?P<from>[^"]*)"$/')]
+    #[When('/^I open the latest email to "(?P<recipient>[^"]*)"$/')]
+    #[When('/^I open the latest email with subject "(?P<subject>[^"]*)"$/')]
+    #[When('/^I open the latest email with body "(?P<body>[^"]*)"$/')]
+    #[When('/^I open the latest email with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/')]
+    #[When('/^I open the latest email from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)"$/')]
+    #[When('/^I open the latest email from "(?P<from>[^"]*)" with subject "(?P<subject>[^"]*)"$/')]
+    #[When('/^I open the latest email to "(?P<recipient>[^"]*)" with subject "(?P<subject>[^"]*)"$/')]
+    #[When('/^I open the latest email from "(?P<from>[^"]*)" with body "(?P<body>[^"]*)"$/')]
+    #[When('/^I open the latest email to "(?P<recipient>[^"]*)" with body "(?P<body>[^"]*)"$/')]
+    // phpcs:ignore Generic.Files.LineLength
+    #[When('/^I open the latest email from "(?P<from>[^"]*)" with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/')]
+    // phpcs:ignore Generic.Files.LineLength
+    #[When('/^I open the latest email to "(?P<recipient>[^"]*)" with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/')]
+    // phpcs:ignore Generic.Files.LineLength
+    #[When('/^I open the latest email from "(?P<from>[^"]*)" to "(?P<recipient>[^"]*)" with subject "(?P<subject>[^"]*)" and body "(?P<body>[^"]*)"$/')]
     public function iOpenTheEmail(
         ?string $from = null,
         ?string $recipient = null,
@@ -165,9 +161,7 @@ final class MailpitContext implements MailpitAwareContext, OpenedEmailStorageAwa
         $this->openedEmailStorage->setOpenedEmail(array_shift($messages));
     }
 
-    /**
-     * @Then /^I should see "(?P<text>[^"]*)" in the opened email$/
-     */
+    #[Then('/^I should see "(?P<text>[^"]*)" in the opened email$/')]
     public function iShouldSeeInTheOpenedEmail(string $text): void
     {
         if (!$this->openedEmailStorage->hasOpenedEmail()) {
@@ -181,9 +175,7 @@ final class MailpitContext implements MailpitAwareContext, OpenedEmailStorageAwa
         }
     }
 
-    /**
-     * @Then /^I should see an attachment with filename "(?P<filename>[^"]*)" in the opened email$/
-     */
+    #[Then('/^I should see an attachment with filename "(?P<filename>[^"]*)" in the opened email$/')]
     public function iShouldAttachmentInOpenedEmail(string $filename): void
     {
         if (!$this->openedEmailStorage->hasOpenedEmail()) {
@@ -199,9 +191,7 @@ final class MailpitContext implements MailpitAwareContext, OpenedEmailStorageAwa
         }
     }
 
-    /**
-     * @Given /^I should see "([^"]*)" in email$/
-     */
+    #[Given('/^I should see "([^"]*)" in email$/')]
     public function iShouldSeeInEmail(string $text): void
     {
         $specification = new BodySpecification($text);
@@ -213,9 +203,7 @@ final class MailpitContext implements MailpitAwareContext, OpenedEmailStorageAwa
         }
     }
 
-    /**
-     * @Then /^there should be (\d+) email(?:s)? in my inbox$/
-     */
+    #[Then('/^there should be (\d+) email(?:s)? in my inbox$/')]
     public function thereShouldBeEmailInMyInbox(int $numEmails): void
     {
         $numMailpitMessages = $this->mailpitClient->getNumberOfMessages();
@@ -231,9 +219,7 @@ final class MailpitContext implements MailpitAwareContext, OpenedEmailStorageAwa
         }
     }
 
-    /**
-     * @Then /^I should see an email with attachment "([^"]*)"$/
-     */
+    #[Then('/^I should see an email with attachment "([^"]*)"$/')]
     public function iShouldSeeAnEmailWithAttachment(string $filename): void
     {
         $specification = new AttachmentSpecification($filename);

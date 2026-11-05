@@ -4,12 +4,13 @@ declare(strict_types=1);
 namespace LibreSign\Behat\MailpitExtension\Listener;
 
 use Behat\Behat\EventDispatcher\Event\ExampleTested;
-use Behat\Behat\EventDispatcher\Event\ScenarioLikeTested;
 use Behat\Behat\EventDispatcher\Event\ScenarioTested;
+use Behat\Gherkin\Node\TaggedNodeInterface;
 use LibreSign\Mailpit\MailpitClient;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use function array_merge;
+use function ltrim;
 
 final class EmailPurgeListener implements EventSubscriberInterface
 {
@@ -41,13 +42,15 @@ final class EmailPurgeListener implements EventSubscriberInterface
         ];
     }
 
-    public function purgeEmails(ScenarioLikeTested $event): void
+    public function purgeEmails(ScenarioTested $event): void
     {
         $scenario = $event->getScenario();
         $feature  = $event->getFeature();
 
-        foreach (array_merge($feature->getTags(), $scenario->getTags()) as $tag) {
-            if ($this->purgeTag === $tag) {
+        $scenarioTags = $scenario instanceof TaggedNodeInterface ? $scenario->getTags() : [];
+
+        foreach (array_merge($feature->getTags(), $scenarioTags) as $tag) {
+            if ($this->purgeTag === ltrim($tag, '@')) {
                 $this->client->purgeMessages();
 
                 return;

@@ -5,6 +5,9 @@ on:
     branches: [master]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   tests:
     services:
@@ -34,6 +37,9 @@ jobs:
           ini-file: development
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Wait for Mailpit
+        run: timeout 30 bash -c 'until curl -fsS http://localhost:9025/ >/dev/null; do sleep 1; done'
 
       - name: Install dependencies
         run: composer install
