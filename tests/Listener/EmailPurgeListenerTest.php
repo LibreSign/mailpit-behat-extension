@@ -138,20 +138,33 @@ final class EmailPurgeListenerTest extends TestCase
     }
 
     #[Test]
-    public function it_should_not_purge_twice_for_the_same_scenario(): void
+    public function it_should_purge_scenarios_with_behat_four_prefixed_tags(): void
     {
         $this->client->expects($this->once())->method('purgeMessages');
 
-        $scenario = new ScenarioNode('test', ['email'], [], 'test', 1);
-        $feature = new FeatureNode('test', 'test', [], null, [$scenario], 'test', 'en_GB', null, 1);
+        $scenario = new ScenarioNode('test', ['@email'], [], 'test', 1);
         $event = new BeforeScenarioTested(
             new StaticEnvironment(new GenericSuite('generic', [])),
-            $feature,
+            new FeatureNode('test', 'test', [], null, [$scenario], 'test', 'en_GB', null, 1),
             $scenario
         );
 
         $this->dispatcher->dispatch($event, ScenarioTested::BEFORE);
-        $this->listener->purgeFor($feature, $scenario);
+    }
+
+    #[Test]
+    public function it_should_purge_features_with_behat_four_prefixed_tags(): void
+    {
+        $this->client->expects($this->once())->method('purgeMessages');
+
+        $scenario = new ScenarioNode('test', [], [], 'test', 1);
+        $event = new BeforeScenarioTested(
+            new StaticEnvironment(new GenericSuite('generic', [])),
+            new FeatureNode('test', 'test', ['@email'], null, [$scenario], 'test', 'en_GB', null, 1),
+            $scenario
+        );
+
+        $this->dispatcher->dispatch($event, ScenarioTested::BEFORE);
     }
 
     #[Test]

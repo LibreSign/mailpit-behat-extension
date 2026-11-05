@@ -5,21 +5,16 @@ namespace LibreSign\Behat\MailpitExtension\Listener;
 
 use Behat\Behat\EventDispatcher\Event\ExampleTested;
 use Behat\Behat\EventDispatcher\Event\ScenarioTested;
-use Behat\Gherkin\Node\FeatureNode;
-use Behat\Gherkin\Node\ScenarioLikeInterface;
 use Behat\Gherkin\Node\TaggedNodeInterface;
 use LibreSign\Mailpit\MailpitClient;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use WeakMap;
 
 use function array_merge;
+use function ltrim;
 
 final class EmailPurgeListener implements EventSubscriberInterface
 {
     private MailpitClient $client;
-
-    /** @var WeakMap<ScenarioLikeInterface, bool> */
-    private WeakMap $purgedScenarios;
 
     /**
      * The tag name for scenarios/features that trigger
@@ -33,7 +28,6 @@ final class EmailPurgeListener implements EventSubscriberInterface
     {
         $this->client = $client;
         $this->purgeTag = $purgeTag;
-        $this->purgedScenarios = new WeakMap();
     }
 
     /**
@@ -50,21 +44,14 @@ final class EmailPurgeListener implements EventSubscriberInterface
 
     public function purgeEmails(ScenarioTested $event): void
     {
-        $this->purgeFor($event->getFeature(), $event->getScenario());
-    }
-
-    public function purgeFor(FeatureNode $feature, ScenarioLikeInterface $scenario): void
-    {
-        if (isset($this->purgedScenarios[$scenario])) {
-            return;
-        }
+        $scenario = $event->getScenario();
+        $feature  = $event->getFeature();
 
         $scenarioTags = $scenario instanceof TaggedNodeInterface ? $scenario->getTags() : [];
 
         foreach (array_merge($feature->getTags(), $scenarioTags) as $tag) {
-            if ($this->purgeTag === $tag) {
+            if ($this->purgeTag === ltrim($tag, '@')) {
                 $this->client->purgeMessages();
-                $this->purgedScenarios[$scenario] = true;
 
                 return;
             }

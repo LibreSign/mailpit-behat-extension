@@ -15,7 +15,6 @@ final class MailpitAwareInitializerRegistrar
     {
         $contextInitializer = new Definition(MailpitAwareInitializer::class, [
             new Reference('mailpit.client'),
-            new Reference('mailpit.purge_listener'),
         ]);
 
         $contextInitializer->addTag(ContextExtension::INITIALIZER_TAG, ['priority' => 0]);
