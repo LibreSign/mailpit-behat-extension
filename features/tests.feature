@@ -72,3 +72,13 @@ Feature: As the developer of this context I want it to function correctly
     Given I send an email with attachment "hello.txt"
     Given I send an email with attachment "foo.txt"
     Then I should see an email with attachment "hello.txt"
+
+  @email
+  Scenario Outline: Purge the inbox before each email example
+    Given I send an email with subject "<subject>" and body "Mailpit Behat 4"
+    Then there should be 1 email in my inbox
+
+    Examples:
+      | subject |
+      | first   |
+      | second  |
