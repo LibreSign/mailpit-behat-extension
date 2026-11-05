@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
 use LibreSign\Behat\MailpitExtension\Context\MailpitAwareContext;
 use LibreSign\Mailpit\MailpitClient;
 use Symfony\Component\Mailer\Mailer;
@@ -22,10 +23,8 @@ final class FeatureContext implements Context, MailpitAwareContext
         $this->mailpit = $client;
     }
 
-    /**
-     * @Given /^I send an email with subject "([^"]*)" and body "([^"]*)"$/
-     * @Given /^I send an email with subject "([^"]*)" and body "([^"]*)" to "([^"]*)"$/
-     */
+    #[Given('/^I send an email with subject "([^"]*)" and body "([^"]*)"$/')]
+    #[Given('/^I send an email with subject "([^"]*)" and body "([^"]*)" to "([^"]*)"$/')]
     public function iSendAnEmailWithSubjectAndBodyTo(string $subject, string $body, string $to = 'me@myself.example'): void
     {
         $email = (new Email())
@@ -41,9 +40,7 @@ final class FeatureContext implements Context, MailpitAwareContext
         $mailer->send($email);
     }
 
-    /**
-     * @Given /^I send an email with attachment "([^"]*)"$/
-     */
+    #[Given('/^I send an email with attachment "([^"]*)"$/')]
     public function iSendAnEmailWithAttachment(string $filename): void
     {
         $email = (new Email())

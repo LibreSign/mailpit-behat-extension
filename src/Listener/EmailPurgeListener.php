@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace LibreSign\Behat\MailpitExtension\Listener;
 
 use Behat\Behat\EventDispatcher\Event\ExampleTested;
-use Behat\Behat\EventDispatcher\Event\ScenarioLikeTested;
 use Behat\Behat\EventDispatcher\Event\ScenarioTested;
 use LibreSign\Mailpit\MailpitClient;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -41,7 +40,7 @@ final class EmailPurgeListener implements EventSubscriberInterface
         ];
     }
 
-    public function purgeEmails(ScenarioLikeTested $event): void
+    public function purgeEmails(ScenarioTested $event): void
     {
         $scenario = $event->getScenario();
         $feature  = $event->getFeature();
